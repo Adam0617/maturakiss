@@ -293,32 +293,66 @@
             font-family: 'Cinzel', serif;
             font-size: 0.9rem;
         }
+        /* Mobile Optimization */
+        @media (max-width: 768px) {
+            header {
+                padding: 0.8rem 0.5rem;
+            }
+            header h1 {
+                font-size: 1.6rem;
+            }
+            nav {
+                margin-top: 0.5rem;
+                gap: 0.5rem;
+            }
+            .btn {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
+                letter-spacing: 0;
+            }
+            
+            /* Adjust timeline line for mobile */
+            .schedule-list::before {
+                left: 20px;
+            }
+            .schedule-item::after {
+                left: 15px;
+            }
+            .schedule-time {
+                width: auto;
+                padding-right: 10px;
+                font-size: 1rem;
+                position: absolute;
+                top: -25px;
+                left: 40px;
+            }
+            .schedule-item {
+                flex-direction: column;
+                align-items: flex-start;
+                margin-top: 2rem;
+            }
+            .schedule-desc {
+                margin-left: 40px;
+                width: calc(100% - 80px); /* Adjust width */
+            }
+        }
+
         /* Scroll Animation Classes */
         .reveal-on-scroll {
             opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            transform: translateY(50px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            will-change: opacity, transform;
         }
 
         .reveal-on-scroll.is-visible {
             opacity: 1;
             transform: translateY(0);
         }
-
-        /* Update existing elements to use this system if needed, 
-           but we will add the class via JS or manually. 
-           Actually, let's override the previous animations for these specific elements 
-           so they wait for scroll. */
-        
-        .sponsor-card, .schedule-item, .class-column {
-            /* Reset previous animations to avoid conflict */
-            animation: none !important; 
-            opacity: 0; 
-        }
     </style>
 </head>
 <body>
-    <header>
+    <header id="main-header">
         <h1 onclick="showSection('sponsors')">Maturitní Ples 2025</h1>
         <nav>
             <button onclick="showSection('sponsors')" class="btn active" id="nav-sponsors">Sponzoři</button>
@@ -414,46 +448,49 @@
             // Plynulý posun nahoru
             window.scrollTo({ top: 0, behavior: 'smooth' });
             
-            // Reset observeru pro novou sekci (aby se animace spustila i po přepnutí)
+            // Re-trigger observer
             setTimeout(setupObserver, 100);
         }
 
         function setupObserver() {
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
+                    // Toggle visibility based on intersection status for "up and down" animation
                     if (entry.isIntersecting) {
                         entry.target.classList.add('is-visible');
+                    } else {
+                        entry.target.classList.remove('is-visible');
                     }
                 });
             }, {
-                threshold: 0.1,
-                rootMargin: "0px 0px -50px 0px" // Trigger slightly before element is fully visible
+                threshold: 0.15, // Slightly higher threshold to avoid flickering
+                rootMargin: "0px 0px -20px 0px" 
             });
 
-            // Observe elements in the ACTIVE section only to avoid issues?
-            // Actually observing all .reveal-on-scroll is fine.
             document.querySelectorAll('.reveal-on-scroll').forEach((el) => {
-                // Remove class first to re-trigger if switching tabs? 
-                // For a true "on scroll" effect, we might want it to happen once.
-                // If we want it to happen every time we switch tabs, we should remove 'is-visible' on tab switch.
-                // Let's do that in showSection.
                 observer.observe(el);
             });
         }
         
+        // Hide Header on Scroll Down
+        let lastScrollTop = 0;
+        const header = document.getElementById('main-header');
+        
+        window.addEventListener('scroll', function() {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            if (scrollTop > lastScrollTop && scrollTop > 100) {
+                // Scroll Down > Hide
+                header.style.transform = 'translateY(-100%)';
+                header.style.transition = 'transform 0.3s ease-in-out';
+            } else {
+                // Scroll Up > Show
+                header.style.transform = 'translateY(0)';
+            }
+            lastScrollTop = scrollTop;
+        });
+        
         // Initial setup
         document.addEventListener('DOMContentLoaded', setupObserver);
-
-        // Modify showSection to reset animations
-        const originalShowSection = showSection;
-        showSection = function(id) {
-            // Hide all items first
-            document.querySelectorAll('.reveal-on-scroll').forEach(el => {
-                el.classList.remove('is-visible');
-            });
-            
-            originalShowSection(id);
-        };
     </script>
 </body>
 </html>
