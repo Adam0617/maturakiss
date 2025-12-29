@@ -2,10 +2,14 @@
 <html lang="cs">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Maturitní Ples 2025</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Great+Vibes&family=Lato:wght@300;400;700&display=swap');
+
+        * {
+            box-sizing: border-box;
+        }
 
         :root {
             --primary-color: #0a192f;
@@ -108,13 +112,18 @@
             to { opacity: 1; }
         }
 
+        /* Sections */
         .section {
             display: none;
-            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
         }
 
         .section.active {
             display: block;
+            opacity: 1;
+            transform: translateY(0);
         }
 
         h2 {
@@ -186,6 +195,7 @@
             max-width: 700px;
             margin: 0 auto;
             padding: 2rem 0;
+            padding-left: 20px; /* Added padding */
         }
 
         /* The vertical line */
@@ -257,6 +267,20 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
+        /* Highlight when scrolling */
+        .schedule-item.highlight::after {
+            transform: scale(1.5);
+            background-color: var(--accent-color);
+            box-shadow: 0 0 20px var(--accent-color);
+        }
+
+        .schedule-item.highlight .schedule-desc {
+            background: rgba(17, 34, 64, 0.8);
+            transform: translateX(10px);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+            border-left-color: #fff;
+        }
+
         /* Participants Columns */
         .participants-container {
             display: grid;
@@ -313,10 +337,10 @@
             
             /* Adjust timeline line for mobile */
             .schedule-list::before {
-                left: 20px;
+                left: 30px;
             }
             .schedule-item::after {
-                left: 15px;
+                left: 25px;
             }
             .schedule-time {
                 width: auto;
@@ -324,16 +348,20 @@
                 font-size: 1rem;
                 position: absolute;
                 top: -25px;
-                left: 40px;
+                left: 50px;
             }
             .schedule-item {
                 flex-direction: column;
                 align-items: flex-start;
                 margin-top: 2rem;
+                padding-left: 0;
+                width: 100%;
             }
             .schedule-desc {
-                margin-left: 40px;
-                width: calc(100% - 80px); /* Adjust width */
+                margin-left: 55px;
+                margin-right: 20px; 
+                width: auto;
+                align-self: stretch; /* This will respect the right margin */
             }
         }
 
@@ -366,26 +394,26 @@
         <div id="sponsors" class="section active">
             <h2>Naši partneři</h2>
             <div class="sponsors-grid">
-                <div class="sponsor-card reveal-on-scroll"><img src="logos/AMON_Co.png" alt="AMON & Co. s. r. o."></div>
-                <div class="sponsor-card text-only reveal-on-scroll"><div class="sponsor-name">Aicha</div></div>
-                <div class="sponsor-card text-only reveal-on-scroll"><div class="sponsor-name">Alexandra Levorová</div></div>
-                <div class="sponsor-card text-only reveal-on-scroll"><div class="sponsor-name">B &  B - Kranballast s. r. o.</div></div>
-                <div class="sponsor-card reveal-on-scroll"><img src="logos/BISHOP.jpg" alt="BISHOP"></div>
-                <div class="sponsor-card text-only reveal-on-scroll"><div class="sponsor-name">Browzie s. r. o.</div></div>
-                <div class="sponsor-card text-only reveal-on-scroll"><div class="sponsor-name">D. B. Company s. r. o.</div></div>
-                <div class="sponsor-card text-only reveal-on-scroll"><div class="sponsor-name">Euro ASIA</div></div>
-                <div class="sponsor-card reveal-on-scroll"><img src="logos/Fun_Arena_Cheb.jpg" alt="Fun arena Cheb"></div>
-                <div class="sponsor-card reveal-on-scroll"><img src="logos/JacobCars.png" alt="JacobCars Detailng Aš"></div>
-                <div class="sponsor-card reveal-on-scroll"><img src="logos/JacobsPizzaBar.png" alt="Jacobs pizza bar"></div>
-                <div class="sponsor-card reveal-on-scroll"><img src="logos/KV_Stena.png" alt="KVstěna.cz"></div>
-                <div class="sponsor-card reveal-on-scroll"><img src="logos/Lagarde_Spedition.png" alt="Lagarde spedition s. r. o."></div>
-                <div class="sponsor-card reveal-on-scroll"><img src="logos/Owis_Tattoo.png" alt="Owis Tattoo"></div>
-                <div class="sponsor-card reveal-on-scroll"><img src="logos/petainer.png" alt="Petainer Czech Holdings s. r. o."></div>
-                <div class="sponsor-card reveal-on-scroll"><img src="logos/logo.png" alt="Reality 11 - Roman Smáha."></div>
-                <div class="sponsor-card text-only reveal-on-scroll"><div class="sponsor-name">Vladimír Dvořák</div></div>
-                <div class="sponsor-card reveal-on-scroll"><img src="logos/VR_Nopf.png" alt="Vrnopf eG"></div>
-                <div class="sponsor-card text-only reveal-on-scroll"><div class="sponsor-name">Václav Maščeník</div></div>
-                <div class="sponsor-card text-only reveal-on-scroll"><div class="sponsor-name">Speciální obaly Cheb, s. r. o.</div></div>
+                <div class="sponsor-card "><img src="logos/AMON_Co.png" alt="AMON & Co. s. r. o."></div>
+                <div class="sponsor-card text-only "><div class="sponsor-name">Aicha</div></div>
+                <div class="sponsor-card text-only "><div class="sponsor-name">Alexandra Levorová</div></div>
+                <div class="sponsor-card text-only "><div class="sponsor-name">B &  B - Kranballast s. r. o.</div></div>
+                <div class="sponsor-card "><img src="logos/BISHOP.jpg" alt="BISHOP"></div>
+                <div class="sponsor-card text-only "><div class="sponsor-name">Browzie s. r. o.</div></div>
+                <div class="sponsor-card text-only "><div class="sponsor-name">D. B. Company s. r. o.</div></div>
+                <div class="sponsor-card text-only "><div class="sponsor-name">Euro ASIA</div></div>
+                <div class="sponsor-card "><img src="logos/Fun_Arena_Cheb.jpg" alt="Fun arena Cheb"></div>
+                <div class="sponsor-card "><img src="logos/JacobCars.png" alt="JacobCars Detailng Aš"></div>
+                <div class="sponsor-card "><img src="logos/JacobsPizzaBar.png" alt="Jacobs pizza bar"></div>
+                <div class="sponsor-card "><img src="logos/KV_Stena.png" alt="KVstěna.cz"></div>
+                <div class="sponsor-card "><img src="logos/Lagarde_Spedition.png" alt="Lagarde spedition s. r. o."></div>
+                <div class="sponsor-card "><img src="logos/Owis_Tattoo.png" alt="Owis Tattoo"></div>
+                <div class="sponsor-card "><img src="logos/petainer.png" alt="Petainer Czech Holdings s. r. o."></div>
+                <div class="sponsor-card "><img src="logos/logo.png" alt="Reality 11 - Roman Smáha."></div>
+                <div class="sponsor-card text-only "><div class="sponsor-name">Vladimír Dvořák</div></div>
+                <div class="sponsor-card "><img src="logos/VR_Nopf.png" alt="Vrnopf eG"></div>
+                <div class="sponsor-card text-only "><div class="sponsor-name">Václav Maščeník</div></div>
+                <div class="sponsor-card text-only "><div class="sponsor-name">Speciální obaly Cheb, s. r. o.</div></div>
             </div>
         </div>
 
@@ -408,19 +436,19 @@
         <div id="participants" class="section">
             <h2>Seznam Účastníků</h2>
             <div class="participants-container">
-                <div class="class-column reveal-on-scroll">
+                <div class="class-column ">
                     <h3>Třída 4.EP</h3>
                     <ul class="student-list">
                         <li>Benda Daniel</li><li>Kolaříková Karolína</li><li>Nguyen Trong Mai Tinh</li><li>Novotná Berenika</li><li>Polova Yelyzaveta</li><li>Prokopcová Markéta</li><li>Trinh Xuan Truong</li><li>Truong Kieu Dan Thu</li><li>Vašmuciusová Zuzana</li><li>Zemanová Liliana</li>
                     </ul>
                 </div>
-                <div class="class-column reveal-on-scroll">
+                <div class="class-column ">
                     <h3>Třída 4.IT</h3>
                     <ul class="student-list">
                         <li>Bigas Martin</li><li>Bortel Ondřej</li><li>Burger Rico</li><li>Červený Petr</li><li>Dlouhý Adam</li><li>Dvořák Radek</li><li>Hoang Quoc Viet</li><li>Hoke Martin</li><li>Königsmark Alexandr</li><li>Lacina Vít</li><li>Matoušek Šimon</li><li>Palkyn Oleksandr</li><li>Smitek Dominik</li><li>Svoboda Vlastimil</li><li>Šorna Patrik</li><li>Špreňar Tomáš</li><li>Vašek David</li><li>Vasilová Daniela</li>
                     </ul>
                 </div>
-                <div class="class-column reveal-on-scroll">
+                <div class="class-column ">
                     <h3>Třída 4.ST</h3>
                     <ul class="student-list">
                         <li>Cihla Petr</li><li>Červeňák Robert</li><li>Kotouš Karel</li><li>Singerová Klára</li><li>Sloupová Lenka</li><li>Soukup Adam</li><li>Šedivý Ondřej</li><li>Žoha David</li>
@@ -436,61 +464,89 @@
 
     <script>
         function showSection(id) {
-            // Skrýt všechny sekce
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            // Zobrazit vybranou sekci
-            document.getElementById(id).classList.add('active');
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(s => {
+                s.classList.remove('active');
+            });
+            // Show target section
+            const target = document.getElementById(id);
+            if (target) {
+                target.classList.add('active');
+            }
             
-            // Aktualizovat tlačítka v navigačním menu
+            // Update nav buttons
             document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('nav-' + id).classList.add('active');
+            const activeBtn = document.getElementById('nav-' + id);
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+            }
             
-            // Plynulý posun nahoru
             window.scrollTo({ top: 0, behavior: 'smooth' });
             
-            // Re-trigger observer
+            // Re-trigger reveal observer for the new section
             setTimeout(setupObserver, 100);
         }
 
         function setupObserver() {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    // Toggle visibility based on intersection status for "up and down" animation
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                    } else {
-                        entry.target.classList.remove('is-visible');
-                    }
+            // 1. Entrance animation (Reveal)
+            const revealObserver = new IntersectionObserver((entries) => {
+                let delay = 0; 
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting && !entry.target.classList.contains('is-visible')) {
+                        setTimeout(() => {
+                            entry.target.classList.add('is-visible');
+                        }, delay);
+                        if (entry.target.classList.contains('schedule-item')) {
+                            delay += 300; 
+                        }
+                    } 
                 });
             }, {
-                threshold: 0.15, // Slightly higher threshold to avoid flickering
-                rootMargin: "0px 0px -20px 0px" 
+                threshold: 0.1,
+                rootMargin: "0px 0px -30px 0px" 
             });
 
             document.querySelectorAll('.reveal-on-scroll').forEach((el) => {
-                observer.observe(el);
+                revealObserver.observe(el);
+            });
+
+            // 2. Highlight effect (ScrollSpy within schedule)
+            const highlightObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Remove highlight from all others first to ensure exclusivity
+                        document.querySelectorAll('.schedule-item').forEach(el => el.classList.remove('highlight'));
+                        entry.target.classList.add('highlight');
+                    }
+                });
+            }, {
+                root: null,
+                rootMargin: "-48% 0px -48% 0px", // Very narrow strip in the middle (4%)
+                threshold: 0
+            });
+
+            document.querySelectorAll('.schedule-item').forEach((el) => {
+                highlightObserver.observe(el);
             });
         }
         
         // Hide Header on Scroll Down
         let lastScrollTop = 0;
         const header = document.getElementById('main-header');
-        
         window.addEventListener('scroll', function() {
             let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
             if (scrollTop > lastScrollTop && scrollTop > 100) {
-                // Scroll Down > Hide
                 header.style.transform = 'translateY(-100%)';
-                header.style.transition = 'transform 0.3s ease-in-out';
             } else {
-                // Scroll Up > Show
                 header.style.transform = 'translateY(0)';
             }
             lastScrollTop = scrollTop;
         });
-        
+
         // Initial setup
-        document.addEventListener('DOMContentLoaded', setupObserver);
+        document.addEventListener('DOMContentLoaded', () => {
+            setupObserver();
+        });
     </script>
 </body>
 </html>
