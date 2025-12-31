@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Maturitní Ples 2026 | Mobile Edition</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Great+Vibes&family=Montserrat:wght@300;400;600;700&display=swap');
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --primary-color: #0a192f;
+            --secondary-color: #112240;
+            --accent-color: #d4af37;
+            --accent-glow: rgba(212, 175, 55, 0.4);
+            --text-color: #e6f1ff;
+            --text-muted: #8892b0;
+            --glass-bg: rgba(10, 25, 47, 0.85);
+            --glass-border: rgba(212, 175, 55, 0.2);
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px; /* Ensures section titles are not hidden by header */
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--primary-color);
+            background-image: url('FinalMaturaback.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            background-blend-mode: overlay;
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            overflow-x: hidden;
+            /* Disable text selection for app-like feel */
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* Scroll Progress Bar */
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-color), #fff, var(--accent-color));
+            width: 0%;
+            z-index: 2000;
+            box-shadow: 0 0 10px var(--accent-color);
+            transition: width 0.1s;
+        }
+
+        /* COMPACT MOBILE HEADER */
+        header {
+            text-align: center;
+            padding: 0.8rem 0.5rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(10, 25, 47, 0.6); /* High transparency for better glass effect */
+            backdrop-filter: blur(15px); /* Stronger blur for glass feel */
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            z-index: 1000;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.6s ease; /* Slower animation */
+            transform: translateY(-100%); /* Initially hidden */
+        }
+
+        header.visible {
+            transform: translateY(0);
+        }
+
+        header h1 {
+            margin: 0 0 0.5rem 0;
+            font-family: 'Cinzel', serif;
+            font-size: 1.4rem; /* Mobile optimized size */
+            color: var(--accent-color);
+            letter-spacing: 1px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-color);
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            border: 1px solid transparent;
+            border-radius: 20px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            transition: all 0.2s ease;
+        }
+
+        .btn:active {
+            background: var(--accent-color);
+            color: var(--primary-color);
+        }
+
+        /* HERO SECTION - Centered & Mobile Optimized */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 100px 1rem 2rem 1rem; /* Top padding clears fixed header */
+        }
+
+        .hero h2 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 3.2rem; /* Slightly smaller for better fit */
+            color: var(--accent-color);
+            margin: 0;
+            line-height: 1.2;
+            text-shadow: 0 0 25px rgba(212, 175, 55, 0.6);
+            animation: zoomIn 1s ease-out;
+        }
+
+        .hero p {
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            margin-top: 1rem;
+            color: #fff;
+            opacity: 0.9;
+        }
+
+        .hero-tag {
+            margin-top: 1.5rem;
+            border: 1px solid var(--accent-color);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            color: var(--accent-color);
+            font-weight: bold;
+            letter-spacing: 2px;
+            background: rgba(10, 25, 47, 0.6);
+            backdrop-filter: blur(4px);
+        }
+
+        .scroll-indicator {
+            margin-top: auto; /* Pushes to bottom */
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            animation: bounce 2s infinite;
+            padding-bottom: 80px; /* Moved much higher up */
+            opacity: 0.8;
+        }
+
+        /* MAIN CONTENT */
+        main {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0 1rem 4rem 1rem;
+            overflow-x: hidden;
+        }
+
+        .section-title {
+            text-align: center;
+            margin: 4rem 0 2rem 0;
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            color: var(--text-color);
+            border-bottom: 2px solid var(--accent-color);
+            display: inline-block;
+            padding-bottom: 0.5rem;
+        }
+
+        /* MOBILE TIMELINE (Single Column) */
+        .timeline {
+            position: relative;
+            padding: 1rem 0 1rem 20px;
+            margin-left: 10px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 2px;
+            background: var(--accent-color);
+            opacity: 0.5;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2.5rem;
+            padding-left: 25px;
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: all 0.5s ease;
+        }
+
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Active Timeline Highlight */
+        .timeline-item.active .timeline-dot {
+            background: var(--accent-color);
+            transform: scale(1.3);
+            box-shadow: 0 0 15px var(--accent-color);
+        }
+        
+        .timeline-item.active .timeline-content {
+            border-color: var(--accent-color);
+            background: rgba(17, 34, 64, 0.9);
+            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.2);
+            transform: scale(1.02);
+            transition: all 0.3s ease;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -9px; /* Centered on the 2px line */
+            top: 5px;
+            width: 20px;
+            height: 20px;
+            background: var(--primary-color);
+            border: 2px solid var(--accent-color);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent-color);
+        }
+
+        .timeline-time {
+            display: block;
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            color: var(--accent-color);
+            font-weight: bold;
+            margin-bottom: 0.2rem;
+        }
+
+        .timeline-content {
+            background: rgba(17, 34, 64, 0.6);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* SPONSORS GRID - Mobile Optimized (2 Columns) */
+        .sponsors-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Force 2 columns on mobile */
+            gap: 10px;
+        }
+
+        .sponsor-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .sponsor-card img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+        
+        .sponsor-name {
+            font-size: 0.8rem;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        /* STUDENT CHIPS - Touch Friendly */
+        .class-container {
+            margin-bottom: 2.5rem;
+        }
+
+        .class-header {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .class-count {
+            font-size: 0.8rem;
+            background: var(--accent-color);
+            color: var(--primary-color);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .student-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Exactly two equal columns */
+            gap: 10px;
+        }
+
+        .student-chip {
+            background: rgba(17, 34, 64, 0.8);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 0.5rem;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 60px; /* Exact fixed height for perfect symmetry */
+            overflow: hidden;
+            word-break: break-word;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--glass-border);
+        }
+
+        /* POPUP MOBILE OPTIMIZED */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 5000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            width: 90%;
+            max-width: 400px;
+            background: var(--secondary-color);
+            border: 2px solid var(--accent-color);
+            border-radius: 15px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(212, 175, 55, 0.3);
+        }
+
+        .modal-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.6rem;
+            color: var(--accent-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-rule {
+            display: flex;
+            align-items: center;
+            background: rgba(10, 25, 47, 0.5);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            text-align: left;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .modal-icon {
+            font-size: 2rem;
+            margin-right: 1rem;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .modal-btn {
+            background: var(--accent-color);
+            color: var(--primary-color);
+            border: none;
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 50px;
+            margin-top: 1rem;
+            text-transform: uppercase;
+        }
+
+        @keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
+
+        /* Desktop override for better use of space on large screens */
+        @media (min-width: 768px) {
+            .sponsors-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+            .hero h2 { font-size: 6rem; }
+            .timeline { max-width: 600px; margin: 0 auto; padding-left: 0; }
+            .timeline::before { left: 50%; margin-left: -1px; }
+            .timeline-item { width: 50%; padding-left: 0; padding-right: 40px; margin-left: 0; text-align: right; transform: translateX(-50px); }
+            .timeline-item:nth-child(even) { left: 50%; padding-right: 0; padding-left: 40px; text-align: left; transform: translateX(50px); }
+            .timeline-dot { left: auto; right: -11px; }
+            .timeline-item:nth-child(even) .timeline-dot { left: -11px; right: auto; }
+            .student-chip { flex-grow: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="scroll-progress"></div>
+
+    <!-- POPUP -->
+    <div id="welcome-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h2 class="modal-title">VÍTEJTE NA PLESE</h2>
+            <p style="margin-bottom: 1.5rem; color: #ccc;">V zájmu hladkého průběhu večera prosíme o dodržování následujících pravidel:</p>
+            
+            <div class="modal-separator" style="border-top: 1px solid var(--accent-color); margin: 1.5rem auto; width: 80%; opacity: 0.7;"></div>
+
+            <div class="modal-rule">
+                <span class="modal-icon">🚭</span>
+                <div>
+                    <strong style="color:var(--accent-color); display:block; text-transform:uppercase; font-size:0.9rem">Přísný zákaz kouření</strong>
+                    ve všech vnitřních prostorách objektu.
+                </div>
+            </div>
+
+            <div class="modal-rule">
+                <span class="modal-icon">🎉</span>
+                <div>
+                    <strong style="color:var(--accent-color); display:block; text-transform:uppercase; font-size:0.9rem">Zákaz používání konfet</strong>
+                    (vystřelovacích i sypaných) v celém sále.
+                </div>
+            </div>
+
+            <div class="modal-separator" style="border-top: 1px solid var(--accent-color); margin: 1.5rem auto; width: 80%; opacity: 0.7;"></div>
+
+            <p style="margin-top: 1.5rem;">A hlavně si <strong style="color:var(--accent-color); text-decoration: underline;">užijte</strong> večer!</p>
+            
+            <button class="modal-btn" onclick="closeModal()">Rozumím</button>
+        </div>
+    </div>
+
+    <!-- HEADER -->
+    <header id="main-nav">
+        <h1>Maturitní Ples 2026</h1>
+        <nav>
+            <a href="#sponsors" class="btn">Partneři</a>
+            <a href="#schedule" class="btn">Program</a>
+            <a href="#participants" class="btn">Maturanti</a>
+        </nav>
+    </header>
+
+    <!-- HERO -->
+    <div class="hero">
+        <h2>Maturitní Ples<br>2026</h2>
+        <p>Vítejte na nezapomenutelném večeru</p>
+        <div class="hero-tag">#ples2026</div>
+        
+        <div class="scroll-indicator">
+            POSUŇTE DOLŮ<br>&#8595;
+        </div>
+    </div>
+
+    <main>
+        <!-- SPONSORS -->
+        <div id="sponsors">
+            <div class="section-title"><h2>Partneři</h2></div>
+            <div class="sponsors-grid">
+                <!-- Image Sponsors -->
+                <div class="sponsor-card"><img src="logos/AMON_Co.png" alt="Sponsor"></div>
+                <div class="sponsor-card"><img src="logos/BISHOP.jpg" alt="Sponsor"></div>
+                <div class="sponsor-card"><img src="logos/Fun_Arena_Cheb.jpg" alt="Sponsor"></div>
+                <div class="sponsor-card"><img src="logos/JacobCars.png" alt="Sponsor"></div>
+                <div class="sponsor-card"><img src="logos/JacobsPizzaBar.png" alt="Sponsor"></div>
+                <div class="sponsor-card"><img src="logos/KV_Stena.png" alt="Sponsor"></div>
+                <div class="sponsor-card"><img src="logos/Lagarde_Spedition.png" alt="Sponsor"></div>
+                <div class="sponsor-card"><img src="logos/Owis_Tattoo.png" alt="Sponsor"></div>
+                <div class="sponsor-card"><img src="logos/petainer.png" alt="Sponsor"></div>
+                <div class="sponsor-card"><img src="logos/logo.png" alt="Sponsor"></div>
+                <div class="sponsor-card"><img src="logos/VR_Nopf.png" alt="Sponsor"></div>
+                
+                <!-- Text Sponsors -->
+                <div class="sponsor-card"><div class="sponsor-name">Aicha</div></div>
+                <div class="sponsor-card"><div class="sponsor-name">Alexandra Levorová</div></div>
+                <div class="sponsor-card"><div class="sponsor-name">B & B - Kranballast</div></div>
+                <div class="sponsor-card"><div class="sponsor-name">Browzie s.r.o.</div></div>
+                <div class="sponsor-card"><div class="sponsor-name">D. B. Company</div></div>
+                <div class="sponsor-card"><div class="sponsor-name">Euro ASIA</div></div>
+                <div class="sponsor-card"><div class="sponsor-name">Vladimír Dvořák</div></div>
+                <div class="sponsor-card"><div class="sponsor-name">Václav Maščeník</div></div>
+                <div class="sponsor-card"><div class="sponsor-name">Speciální obaly Cheb</div></div>
+            </div>
+        </div>
+
+        <!-- TIMELINE -->
+        <div id="schedule">
+            <div class="section-title"><h2>Harmonogram</h2></div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-time">18:00</span>
+                        <div>Otevření sálu</div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-time">19:00</span>
+                        <div>Zahájení a projev ředitele</div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-time">19:30</span>
+                        <div>Předtančení</div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-time">20:00</span>
+                        <div>Nástup a projev žáků</div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-time">20:30</span>
+                        <div>Šerpování a přípitek, Sóla</div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-time">23:00</span>
+                        <div>Dražba</div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-time">00:00</span>
+                        <div>Půlnoční překvapení</div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-time">01:30</span>
+                        <div>Ukončení plesu</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PARTICIPANTS -->
+        <div id="participants">
+            <div class="section-title"><h2>Maturanti</h2></div>
+
+            <div class="class-container">
+                <div class="class-header">Třída 4.IT <span class="class-count">18</span></div>
+                <div class="student-grid">
+                    <div class="student-chip">Bigas Martin</div><div class="student-chip">Bortel Ondřej</div><div class="student-chip">Burger Rico</div><div class="student-chip">Červený Petr</div><div class="student-chip">Dlouhý Adam</div><div class="student-chip">Dvořák Radek</div><div class="student-chip">Hoang Quoc Viet</div><div class="student-chip">Hoke Martin</div><div class="student-chip">Königsmark Alexandr</div><div class="student-chip">Lacina Vít</div><div class="student-chip">Matoušek Šimon</div><div class="student-chip">Palkyn Oleksandr</div><div class="student-chip">Smitek Dominik</div><div class="student-chip">Svoboda Vlastimil</div><div class="student-chip">Šorna Patrik</div><div class="student-chip">Špreňar Tomáš</div><div class="student-chip">Vašek David</div><div class="student-chip">Vasiľová Daniela</div>
+                </div>
+            </div>
+
+            <div class="class-container">
+                <div class="class-header">Třída 4.EP <span class="class-count">10</span></div>
+                <div class="student-grid">
+                    <div class="student-chip">Benda Daniel</div><div class="student-chip">Kolaříková Karolína</div><div class="student-chip">Nguyen Trong Mai Tinh</div><div class="student-chip">Novotná Berenika</div><div class="student-chip">Polova Yelyzaveta</div><div class="student-chip">Prokopcová Markéta</div><div class="student-chip">Trinh Xuan Truong</div><div class="student-chip">Truong Kieu Dan Thu</div><div class="student-chip">Vašmuciusová Zuzana</div><div class="student-chip">Zemanová Liliana</div>
+                </div>
+            </div>
+
+            <div class="class-container">
+                <div class="class-header">Třída 4.ST <span class="class-count">8</span></div>
+                <div class="student-grid">
+                    <div class="student-chip">Cihla Petr</div><div class="student-chip">Červeňák Robert</div><div class="student-chip">Kotouš Karel</div><div class="student-chip">Singerová Klára</div><div class="student-chip">Sloupová Lenka</div><div class="student-chip">Soukup Adam</div><div class="student-chip">Šedivý Ondřej</div><div class="student-chip">Žoha David</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2026 Maturitní ples<br>Design by Adam Dlouhý
+    </footer>
+
+    <script>
+        // --- CONFIGURATION ---
+        const ENABLE_AUTO_SCROLL = false; // Set to true to enable the auto-scroll to sponsors
+
+        // --- LOGIC ---
+        
+        // --- CUSTOM SLOW SCROLL LOGIC ---
+        let hasScrolledToSponsors = false;
+        let isAnimating = false;
+        let ignoreScroll = false; // Flag to prevent auto-scroll on popup close
+
+        // Popup
+        function closeModal() {
+            document.getElementById('welcome-modal').classList.remove('active');
+            document.body.style.overflow = ''; // Re-enable scrolling
+            
+            // Prevent auto-scroll from firing immediately due to layout shift
+            ignoreScroll = true;
+            setTimeout(() => { ignoreScroll = false; }, 300);
+        }
+
+        // Always show popup on load
+        setTimeout(() => {
+            document.getElementById('welcome-modal').classList.add('active');
+            document.body.style.overflow = 'hidden'; // Disable scrolling
+        }, 500);
+
+        function smoothScrollTo(elementId, duration) {
+            const target = document.getElementById(elementId);
+            if (!target) return;
+
+            isAnimating = true;
+            // Calculate target position with offset for header
+            const headerOffset = 80;
+            const elementPosition = target.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+            const startPosition = window.pageYOffset;
+            const distance = offsetPosition - startPosition;
+            let startTime = null;
+
+            function animation(currentTime) {
+                if (startTime === null) startTime = currentTime;
+                const timeElapsed = currentTime - startTime;
+                
+                // Ease In Out Quad function for smooth organic feel
+                const ease = (t, b, c, d) => {
+                    t /= d / 2;
+                    if (t < 1) return c / 2 * t * t + b;
+                    t--;
+                    return -c / 2 * (t * (t - 2) - 1) + b;
+                };
+
+                const run = ease(timeElapsed, startPosition, distance, duration);
+                window.scrollTo(0, run);
+
+                if (timeElapsed < duration) {
+                    requestAnimationFrame(animation);
+                } else {
+                    isAnimating = false;
+                }
+            }
+
+            requestAnimationFrame(animation);
+        }
+
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            
+            // Progress Bar
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (currentScroll / height) * 100;
+            progress.style.width = scrolled + "%";
+
+            // Header Visibility (Show only after scrolling down 100px)
+            if (currentScroll > 100) {
+                header.classList.add('visible');
+            } else {
+                header.classList.remove('visible');
+            }
+
+            // Trigger slow scroll IMMEDIATELY on first movement (One-time only)
+            if (ENABLE_AUTO_SCROLL && !ignoreScroll && !hasScrolledToSponsors && !isAnimating && window.scrollY > 10) {
+                hasScrolledToSponsors = true;
+                smoothScrollTo('sponsors', 2000); 
+            }
+        }, { passive: true });
+
+
+        // Scroll Reveal & Timeline Highlight
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                // Reveal animation
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        const highlightObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Remove active class from all items
+                    document.querySelectorAll('.timeline-item').forEach(el => el.classList.remove('active'));
+                    // Add active class to current item
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { 
+            rootMargin: "-45% 0px -45% 0px", // Trigger when element is in the vertical center
+            threshold: 0
+        });
+
+        document.querySelectorAll('.timeline-item').forEach(item => {
+            revealObserver.observe(item);
+            highlightObserver.observe(item);
+        });
+    </script>
+</body>
+</html>
