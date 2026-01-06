@@ -607,7 +607,7 @@
             <div class="class-container">
                 <div class="class-header">Třída 4.ST <span class="class-count">8</span></div>
                 <div class="student-grid">
-                    <div class="student-chip">Cihla Petr</div><div class="student-chip">Červeňák Robert</div><div class="student-chip">Kotouš Karel</div><div class="student-chip">Singerová Klára</div><div class="student-chip">Sloupová Lenka</div><div class="student-chip">Soukup Adam</div><div class="student-chip">Šedivý Ondřej</div><div class="student-chip">Žoha David</div>
+                    <div class="student-chip">Cihla Petr</div><div class="student-chip">Červeňák Robert</div><div class="student-chip">Hamouz Matěj</div><div class="student-chip">Kotouš Karel</div><div class="student-chip">Singerová Klára</div><div class="student-chip">Sloupová Lenka</div><div class="student-chip">Soukup Adam</div><div class="student-chip">Šedivý Ondřej</div><div class="student-chip">Žoha David</div>
                 </div>
             </div>
         </div>
@@ -621,6 +621,10 @@
         // --- CONFIGURATION ---
         const ENABLE_AUTO_SCROLL = false; // Set to true to enable the auto-scroll to sponsors
 
+        // --- DOM ELEMENTS ---
+        const progress = document.getElementById('scroll-progress');
+        const header = document.getElementById('main-nav');
+
         // --- LOGIC ---
         
         // --- CUSTOM SLOW SCROLL LOGIC ---
@@ -633,16 +637,21 @@
             document.getElementById('welcome-modal').classList.remove('active');
             document.body.style.overflow = ''; // Re-enable scrolling
             
+            // Save to localStorage so it doesn't show again
+            localStorage.setItem('welcomeModalSeen', 'true');
+
             // Prevent auto-scroll from firing immediately due to layout shift
             ignoreScroll = true;
             setTimeout(() => { ignoreScroll = false; }, 300);
         }
 
-        // Always show popup on load
-        setTimeout(() => {
-            document.getElementById('welcome-modal').classList.add('active');
-            document.body.style.overflow = 'hidden'; // Disable scrolling
-        }, 500);
+        // Show popup on load only if not seen before
+        if (!localStorage.getItem('welcomeModalSeen')) {
+            setTimeout(() => {
+                document.getElementById('welcome-modal').classList.add('active');
+                document.body.style.overflow = 'hidden'; // Disable scrolling
+            }, 500);
+        }
 
         function smoothScrollTo(elementId, duration) {
             const target = document.getElementById(elementId);
